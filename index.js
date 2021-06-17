@@ -21,6 +21,14 @@ let brickOffsetTop = 30;
 let brickOffsetLeft = 30;
 let score = 0;
 
+function reset(){
+    x = canvas.width/2;
+    y = canvas.height-30;
+    dx = 2;
+    dy = -2;
+    document.location.reload();
+}
+
 /**
  * ブロックの位置情報
  * @var Object[]
@@ -95,8 +103,8 @@ function draw() {
             dy = -dy;
         }
         else {
-            alert("GAME OVER");
-            document.location.reload();
+            alert("がんばれ！！もう一回挑戦だ");
+            reset()
         }
     }
     if(x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -162,7 +170,7 @@ function collisionDetection() {
                     score++;
                     if(score == brickRowCount*brickColumnCount) {
                         alert("すごい！！！！大変よくできました！！");
-                        document.location.reload();
+                        reset()
                     }
                 }
             }
@@ -179,3 +187,4 @@ function drawScore() {
     ctx.fillText("Score: " + score, 8, 20);
 }
 let interval = setInterval(draw, 10);
+
