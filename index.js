@@ -96,6 +96,7 @@ function draw() {
     drawBall();
     drawPaddle();
     drawScore();
+    drawPauseOrResumeButton();
     if(y + dy < ballRadius) {
         dy = -dy;
     } else if(y + dy > canvas.height-ballRadius) {
