@@ -96,7 +96,7 @@ function draw() {
     drawBall();
     drawPaddle();
     drawScore();
-    drawPauseOrResumeButton();
+    drawPauseButton();
     if(y + dy < ballRadius) {
         dy = -dy;
     } else if(y + dy > canvas.height-ballRadius) {
@@ -189,41 +189,41 @@ function drawScore() {
 }
 
 /**
- * 一時停止と再開ボタン描画
+ * 一時停止ボタン描画
  */
-function drawPauseOrResumeButton() {
+function drawPauseButton() {
     let bottomLeft = { x: canvas.width - 20, y: 20 };
-    if (pauseHandle != null) {
-        drawResumeButton();
-    } else {
-        drawPauseButton();
+    let rectL = {
+        x: bottomLeft.x,
+        y: bottomLeft.y - 15,
+    };
+    let rectR = {
+        x: bottomLeft.x + 10,
+        y: bottomLeft.y - 15,
     }
-    function drawPauseButton() {
-        let rectL = {
-            x: bottomLeft.x,
-            y: bottomLeft.y - 15,
-        };
-        let rectR = {
-            x: bottomLeft.x + 10,
-            y: bottomLeft.y - 15,
-        }
-        let w = 5, h = 15;
-        ctx.fillStyle = "#0095DD";
-        ctx.fillRect(rectL.x, rectL.y, w, h);
-        ctx.fillRect(rectR.x, rectR.y, w, h);
-    }
-    function drawResumeButton() {
-        ctx.beginPath();
-        ctx.moveTo(bottomLeft.x, bottomLeft.y);
-        ctx.lineTo(bottomLeft.x, bottomLeft.y - 15);
-        ctx.lineTo(bottomLeft.x + 15, bottomLeft.y - 7.5);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-    }
+    let w = 5, h = 15;
+    ctx.fillStyle = "#0095DD";
+    ctx.fillRect(rectL.x, rectL.y, w, h);
+    ctx.fillRect(rectR.x, rectR.y, w, h);
+}
+
+/**
+ * 再開ボタン描画
+ */
+function drawResumeButton() {
+    let bottomLeft = { x: canvas.width - 20, y: 20 };
+    ctx.clearRect(bottomLeft.x, bottomLeft.y - 15, 15, 15);
+    ctx.beginPath();
+    ctx.moveTo(bottomLeft.x, bottomLeft.y);
+    ctx.lineTo(bottomLeft.x, bottomLeft.y - 15);
+    ctx.lineTo(bottomLeft.x + 15, bottomLeft.y - 7.5);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
 }
 canvas.addEventListener('click', function(mouseEvent) {
     if (pauseOrResumeButtonIsClicked()) {
         gamePauseOrResume();
+        drawResumeButton();
     }
     function pauseOrResumeButtonIsClicked() {
         return mouseEvent.offsetX > (canvas.width - 20) &&
