@@ -186,5 +186,70 @@ function drawScore() {
     ctx.fillStyle = "#0095DD";
     ctx.fillText("Score: " + score, 8, 20);
 }
-let interval = setInterval(draw, 10);
 
+/**
+ * 一時停止と再開ボタン描画
+ */
+function drawPauseOrResumeButton() {
+    let bottomLeft = { x: canvas.width - 20, y: 20 };
+    if (pauseHandle != null) {
+        drawResumeButton();
+    } else {
+        drawPauseButton();
+    }
+    function drawPauseButton() {
+        let rectL = {
+            x: bottomLeft.x,
+            y: bottomLeft.y - 15,
+        };
+        let rectR = {
+            x: bottomLeft.x + 10,
+            y: bottomLeft.y - 15,
+        }
+        let w = 5, h = 15;
+        ctx.fillRect(rectL.x, rectL.y, w, h);
+        ctx.fillRect(rectR.x, rectR.y, w, h);
+    }
+    function drawResumeButton() {
+        ctx.beginPath();
+        ctx.moveTo(bottomLeft.x, bottomLeft.y);
+        ctx.lineTo(bottomLeft.x, bottomLeft.y - 15);
+        ctx.lineTo(bottomLeft.x + 15, bottomLeft.y - 7.5);
+        ctx.fill();
+    }
+}
+canvas.addEventListener('click', function(mouseEvent) {
+    if (pauseOrResumeButtonIsClicked()) {
+        gamePauseOrResume();
+    }
+    function pauseOrResumeButtonIsClicked() {
+        return mouseEvent.offsetX > (canvas.width - 20) &&
+            mouseEvent.offsetY < 20;
+    }
+}, false);
+
+/**
+ * ゲーム開始と一時停止用Handle
+ */
+let pauseHandle = null;
+
+/**
+ * ゲーム開始
+ */
+function gameStart() {
+    pauseHandle = setInterval(draw, 10);
+}
+
+/**
+ * ゲーム一時停止と再開
+ */
+function gamePauseOrResume() {
+    if (pauseHandle != null) {
+        clearInterval(pauseHandle);
+        pauseHandle = null;
+    } else {
+        gameStart();
+    }
+}
+
+gameStart();
